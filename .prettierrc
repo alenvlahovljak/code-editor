@@ -4,7 +4,5 @@
   "printWidth": 100,
   "singleQuote": true,
   "jsxBracketSameLine": true,
-  "trailingComma": "none",
-  "importOrder": ["react", "^@core/(.*)$", "^@server/(.*)$", "^@ui/(.*)$", "^[./]"],
-  "importOrderSeparation": true
+  "trailingComma": "none"
 }
