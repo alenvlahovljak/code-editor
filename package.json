@@ -4,7 +4,7 @@
     "build": "snowpack build",
     "test": "web-test-runner \"src/**/*.test.tsx\"",
     "format": "prettier --write \"src/**/*.{js,jsx,ts,tsx}\"",
-    "lint": "eslint src/**/*.ts{,x}"
+    "lint": "eslint src/**/*.ts{,x} --fix"
   },
   "dependencies": {
     "react": "^17.0.0",
