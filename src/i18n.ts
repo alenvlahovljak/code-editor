@@ -11,7 +11,8 @@ export default i18n
   .init({
     preload: [FALLBACK_LANGUAGE],
     fallbackLng: FALLBACK_LANGUAGE,
-    debug: true,
+    // won't print anything into console
+    debug: false,
     detection: {
       order: ['queryString', 'cookie'],
       cache: ['cookie'],
