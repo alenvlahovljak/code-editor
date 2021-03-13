@@ -30,6 +30,8 @@ module.exports = {
   alias: {
     '@/*': './src/*',
     'types/*': './src/types/*',
+    utils: './src/utils/index',
+    hooks: './src/hooks/index',
     layout: './src/components/layout/index',
     UI: './src/components/UI/index',
     'components/*': './src/components/*'

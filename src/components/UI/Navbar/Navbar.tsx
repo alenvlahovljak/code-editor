@@ -1,14 +1,17 @@
 import React, { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   AppBar,
   Toolbar,
+  IconButton,
   Typography,
   Switch,
   FormControlLabel,
   FormGroup
 } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
+import { LangPicker } from 'UI';
 
 import { Brightness2 as MoonIcon, Flare as SunIcon } from '@material-ui/icons';
 
@@ -27,6 +30,7 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const Navbar: FC = () => {
+  const { t } = useTranslation();
   const classes = useStyles();
   const [mode, setMode] = useState(false);
 
@@ -38,9 +42,6 @@ const Navbar: FC = () => {
     <div className={classes.root}>
       <AppBar position="static">
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            Code Editor
-          </Typography>
           <FormGroup>
             <FormControlLabel
               control={<Switch checked={mode} onChange={handleChange} aria-label="login switch" />}
@@ -48,6 +49,12 @@ const Navbar: FC = () => {
             />
           </FormGroup>
           {mode ? <MoonIcon /> : <SunIcon />}
+          <Typography variant="h6" className={classes.title}>
+            {t('navigation.title')}
+          </Typography>
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
+            <LangPicker />
+          </IconButton>
         </Toolbar>
       </AppBar>
     </div>
