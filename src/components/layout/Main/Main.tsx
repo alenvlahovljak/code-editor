@@ -1,15 +1,29 @@
 import React, { FC } from 'react';
 
-import { Container } from '@material-ui/core';
+import { Container, Grid, Paper } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import { Navbar } from 'UI';
 
 import type { IMain } from 'types/components/layout/types';
 
-const Main: FC<IMain> = ({ children }) => {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    flexGrow: 1,
+    padding: theme.spacing(3)
+  }
+}));
+
+const Main: FC<IMain> = ({ children, className }) => {
+  const classes = useStyles();
+
   return (
-    <div>
+    <div className={className}>
       <Navbar />
-      <Container>{children}</Container>
+      <div className={classes.root}>
+        <Grid container spacing={3}>
+          {children}
+        </Grid>
+      </div>
     </div>
   );
 };

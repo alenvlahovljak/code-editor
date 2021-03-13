@@ -29,7 +29,7 @@ module.exports = {
   },
   alias: {
     '@/*': './src/*',
-    'types/*': ['./src/types/*'],
+    'types/*': './src/types/*',
     layout: './src/components/layout/index',
     UI: './src/components/UI/index',
     'components/*': './src/components/*'

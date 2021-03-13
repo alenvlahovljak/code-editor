@@ -2,6 +2,8 @@ import { Main } from 'layout';
 
 import React, { useState, useEffect } from 'react';
 
+import { CodeIntegrator } from 'UI';
+
 import './App.css';
 
 interface AppProps {}
@@ -16,9 +18,9 @@ function App({}: AppProps) {
   }, [count, setCount]);
   // Return the App component.
   return (
-    <div className="App">
-      <Main></Main>
-    </div>
+    <Main className="App">
+      <CodeIntegrator />
+    </Main>
   );
 }
 
