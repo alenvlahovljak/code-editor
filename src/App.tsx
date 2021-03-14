@@ -2,15 +2,15 @@ import React, { Suspense } from 'react';
 
 import { Main } from 'layout';
 import { CodeIntegrator } from 'UI';
+import { PageAnimation } from './components/animations';
 
-import './App.css';
 import './i18n';
 
 interface AppProps {}
 
 function App({}: AppProps) {
   return (
-    <Suspense fallback="loading">
+    <Suspense fallback={<PageAnimation />}>
       <Main className="App">
         <CodeIntegrator />
       </Main>
