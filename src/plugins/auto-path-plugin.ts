@@ -11,14 +11,14 @@ export const autoPathPlugin = (inputCode: string) => {
     setup(build: esbuild.PluginBuild) {
       build.onResolve({ filter: /(^index\.js$)/ }, (args) => {
         console.log('onResolve entry point', args);
-        return { path: args.path, namespace: '' };
+        return { path: args.path, namespace: 'foo' };
       });
 
       build.onResolve({ filter: /^\.+\// }, async (args) => {
         console.log('onResolve ./ and ../ - relative paths', args);
 
         return {
-          namespace: '',
+          namespace: 'foo',
           path: new URL(args.path, `https://unpkg.com/${args.resolveDir}/`).href
         };
       });
@@ -27,7 +27,7 @@ export const autoPathPlugin = (inputCode: string) => {
         console.log('onResolve - main file', args);
 
         return {
-          namespace: '',
+          namespace: 'foo',
           path: `https://unpkg.com/${args.path}`
         };
       });
