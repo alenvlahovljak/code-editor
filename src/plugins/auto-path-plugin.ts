@@ -1,7 +1,7 @@
 import type * as esbuild from 'esbuild-wasm';
 import axios from 'axios';
 
-import { initCache } from '../utils/helpers';
+import { initCache, resolveFileType } from '../utils/helpers';
 
 const pkgsCache = initCache('pkgs');
 
@@ -52,11 +52,9 @@ export const autoPathPlugin = (inputCode: string) => {
         console.log('request', request);
         console.log('data', data);
 
-        const loader = args.path.match(/.css$/) ? 'css' : 'jsx';
-
         const result: esbuild.OnLoadResult = {
-          loader,
-          contents: data,
+          loader: 'jsx',
+          contents: resolveFileType(args.path, data),
           resolveDir: new URL('./', request.responseURL).pathname
         };
 
