@@ -1,0 +1,32 @@
+{
+  "navigation": {
+    "title": "Code Editor",
+    "languages": {
+      "bs": {
+        "code": "bs",
+        "name": "Bosnian"
+      },
+      "de": {
+        "code": "de",
+        "name": "German"
+      },
+      "en": {
+        "code": "en",
+        "name": "English"
+      },
+      "fr": {
+        "code": "fr",
+        "name": "French"
+      },
+      "hr": {
+        "code": "hr",
+        "name": "Croatian"
+      },
+      "sr": {
+        "code": "sr",
+        "name": "Serbian"
+      }
+    }
+  },
+  "button": "Transpile"
+}

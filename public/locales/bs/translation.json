@@ -1,0 +1,32 @@
+{
+  "navigation": {
+    "title": "Uređivač koda",
+    "languages": {
+      "bs": {
+        "code": "bs",
+        "name": "Bosanski"
+      },
+      "de": {
+        "code": "de",
+        "name": "Njemački"
+      },
+      "en": {
+        "code": "en",
+        "name": "Engleski"
+      },
+      "fr": {
+        "code": "fr",
+        "name": "Francuski"
+      },
+      "hr": {
+        "code": "hr",
+        "name": "Hrvatski"
+      },
+      "sr": {
+        "code": "sr",
+        "name": "Srpski"
+      }
+    }
+  },
+  "button": "Konvertuj"
+}

@@ -1,0 +1,32 @@
+{
+  "navigation": {
+    "title": "Уређивач кода",
+    "languages": {
+      "bs": {
+        "code": "bs",
+        "name": "Босански"
+      },
+      "de": {
+        "code": "de",
+        "name": "Немачки"
+      },
+      "en": {
+        "code": "en",
+        "name": "Eнглески"
+      },
+      "fr": {
+        "code": "fr",
+        "name": "Француски"
+      },
+      "hr": {
+        "code": "hr",
+        "name": "Хрватски"
+      },
+      "sr": {
+        "code": "sr",
+        "name": "Српски"
+      }
+    }
+  },
+  "button": "Претвори"
+}
