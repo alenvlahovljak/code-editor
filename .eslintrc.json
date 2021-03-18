@@ -25,6 +25,7 @@
   },
   "plugins": ["react", "@typescript-eslint", "prettier"],
   "rules": {
+    "no-console": "off",
     "eqeqeq": "off",
     "prettier/prettier": ["warn", {}, { "usePrettierrc": true }],
     "import/prefer-default-export": "off",

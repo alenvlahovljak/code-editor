@@ -25,8 +25,8 @@ const CodeIntegrator: FC = () => {
   const { t, i18n } = useTranslation();
   const classes = useStyles();
 
-  const wasmRef = useRef<any>();
-  const iframeRef = useRef<any>();
+  const wasmRef = useRef<esbuild.Service | null>(null);
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
   const [input, setInput] = useState(DEFAULT_INPUT);
 
@@ -41,7 +41,7 @@ const CodeIntegrator: FC = () => {
   }, []);
 
   const onClick = async () => {
-    if (!wasmRef.current) {
+    if (!wasmRef.current || !iframeRef.current?.srcdoc || !iframeRef.current?.contentWindow) {
       return;
     }
 
@@ -60,6 +60,7 @@ const CodeIntegrator: FC = () => {
     });
     console.log('Build:', result);
 
+    // emit message
     iframeRef.current.contentWindow.postMessage(result.outputFiles[0].text, '*');
   };
 
