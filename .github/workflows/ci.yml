@@ -7,7 +7,6 @@ on:
         required: true
         description: "Manually triggered"
         default: "This workflow is manually triggered!"
-
   push:
     branches:
       - "!master/**"
