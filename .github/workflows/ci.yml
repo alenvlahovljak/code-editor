@@ -2,9 +2,8 @@ name: CI/CD
 
 on:
   push:
-    branches-ignore:
-      - "master"
     branches:
+      - "!master/**"
       - "init/config"
       - "up-and-running"
       - "handle-output-code"
