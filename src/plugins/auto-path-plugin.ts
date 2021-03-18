@@ -11,6 +11,7 @@ export const autoPathPlugin = (inputCode: string) => {
     setup(build: esbuild.PluginBuild) {
       build.onResolve({ filter: /(^index\.js$)/ }, (args) => {
         console.log('onResolve entry point', args);
+
         return { path: args.path, namespace: 'foo' };
       });
 
