@@ -29,7 +29,6 @@ const CodeIntegrator: FC = () => {
   const iframeRef = useRef<any>();
 
   const [input, setInput] = useState(DEFAULT_INPUT);
-  const [output, setOutput] = useState('');
 
   const startService = async () => {
     wasmRef.current = await esbuild.startService({
