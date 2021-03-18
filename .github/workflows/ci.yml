@@ -1,12 +1,6 @@
 name: CI/CD
 
 on:
-  workflow_dispatch:
-    inputs:
-      msg:
-        required: true
-        description: "Manually triggered"
-        default: "This workflow is manually triggered!"
   push:
     branches:
       - "!master/**"
