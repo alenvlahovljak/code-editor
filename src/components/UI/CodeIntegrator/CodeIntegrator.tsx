@@ -5,7 +5,7 @@ import { Grid, TextareaAutosize, Button } from '@material-ui/core';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { autoPathPlugin } from '../../../plugins/auto-path-plugin';
 
-import { DEFAULT_INPUT } from '../../../utils/contants';
+import { WASM_URL, DEFAULT_INPUT } from '../../../utils/contants';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -29,7 +29,7 @@ const CodeIntegrator: FC = () => {
 
   const startService = async () => {
     wasmRef.current = await esbuild.startService({
-      wasmURL: '/esbuild.wasm'
+      wasmURL: WASM_URL
     });
   };
 
