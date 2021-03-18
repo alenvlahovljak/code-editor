@@ -1,7 +1,7 @@
 import type * as esbuild from 'esbuild-wasm';
 import axios from 'axios';
 
-import { initCache, resolveFileType } from '../utils/helpers';
+import { cssInjector, initCache, escapeCharacters, resolveFileType } from '../utils/helpers';
 
 const pkgsCache = initCache('pkgs');
 
@@ -32,15 +32,18 @@ export const autoPathPlugin = (inputCode: string) => {
         };
       });
 
-      build.onLoad({ filter: /.*/ }, async (args: any) => {
-        console.log('onLoad', args);
+      build.onLoad({ filter: /(^index\.js$)/ }, (args: esbuild.OnLoadArgs) => {
+        console.log('onBuild - main file', args);
 
-        if (args.path === 'index.js') {
-          return {
-            loader: 'jsx',
-            contents: inputCode
-          };
-        }
+        return {
+          loader: 'jsx',
+          contents: inputCode
+        };
+      });
+
+      // order matter - first we check the cache
+      build.onLoad({ filter: /.*/ }, async (args: esbuild.OnLoadArgs) => {
+        console.log('onLoad - cached packages', args);
 
         const cachedResult = await pkgsCache.getItem<esbuild.OnLoadResult>(args.path);
 
@@ -48,9 +51,34 @@ export const autoPathPlugin = (inputCode: string) => {
           return cachedResult;
         }
 
+        return null;
+      });
+
+      // order matter - we have to check is there any CSS import before the universal filter
+      build.onLoad({ filter: /.css$/ }, async (args: esbuild.OnLoadArgs) => {
+        console.log('onLoad - CSS file', args);
+
         const { data, request } = await axios.get(args.path);
-        console.log('request', request);
-        console.log('data', data);
+
+        const escaped = escapeCharacters(data, /[.*+?^${}()|[\]\\]/g);
+        const contents = cssInjector(escaped);
+
+        const result: esbuild.OnLoadResult = {
+          loader: 'jsx',
+          contents,
+          resolveDir: new URL('./', request.responseURL).pathname
+        };
+
+        await pkgsCache.setItem<esbuild.OnLoadResult>(args.path, result);
+
+        return result;
+      });
+
+      // order matter - if there is no cache or isn't uncached CSS file
+      build.onLoad({ filter: /.*/ }, async (args: esbuild.OnLoadArgs) => {
+        console.log('onLoad - uncached JSX or CSS file', args);
+
+        const { data, request } = await axios.get(args.path);
 
         const result: esbuild.OnLoadResult = {
           loader: 'jsx',
