@@ -4,8 +4,9 @@ import { useTranslation } from 'react-i18next';
 import { Grid, TextareaAutosize, Button } from '@material-ui/core';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { autoPathPlugin } from '../../../plugins/auto-path-plugin';
+import { htmlDocument } from '../../../utils/helpers';
 
-import { DEFAULT_INPUT } from '../../../utils/contants';
+import { WASM_URL, DEFAULT_INPUT } from '../../../utils/contants';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -21,15 +22,17 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const CodeIntegrator: FC = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const classes = useStyles();
-  const wasmRef = useRef<any>();
+
+  const wasmRef = useRef<esbuild.Service | null>(null);
+  const iframeRef = useRef<HTMLIFrameElement | null>(null);
+
   const [input, setInput] = useState(DEFAULT_INPUT);
-  const [output, setOutput] = useState('');
 
   const startService = async () => {
     wasmRef.current = await esbuild.startService({
-      wasmURL: '/esbuild.wasm'
+      wasmURL: WASM_URL
     });
   };
 
@@ -38,9 +41,12 @@ const CodeIntegrator: FC = () => {
   }, []);
 
   const onClick = async () => {
-    if (!wasmRef.current) {
+    if (!wasmRef.current || !iframeRef.current?.srcdoc || !iframeRef.current?.contentWindow) {
       return;
     }
+
+    // it's srcdoc not srcDoc
+    iframeRef.current.srcdoc = htmlDocument(i18n.language);
 
     const result = await wasmRef.current.build({
       entryPoints: ['index.js'],
@@ -52,9 +58,10 @@ const CodeIntegrator: FC = () => {
         global: 'window'
       }
     });
-
-    setOutput(result.outputFiles[0].text);
     console.log('Build:', result);
+
+    // emit message
+    iframeRef.current.contentWindow.postMessage(result.outputFiles[0].text, '*');
   };
 
   return (
@@ -68,7 +75,12 @@ const CodeIntegrator: FC = () => {
           />
         </Grid>
         <Grid item xs={12} sm={12} md={6}>
-          <TextareaAutosize readOnly rowsMin={9} value={output} />
+          <iframe
+            ref={iframeRef}
+            title="Code Preview"
+            sandbox="allow-scripts"
+            srcDoc={htmlDocument(i18n.language)}
+          />
         </Grid>
         <Grid item xs={12} sm={12} md={6}>
           <Button variant="contained" color="primary" onClick={onClick}>

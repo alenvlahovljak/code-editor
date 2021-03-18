@@ -49,7 +49,7 @@ const Navbar: FC = () => {
             />
           </FormGroup>
           {mode ? <MoonIcon /> : <SunIcon />}
-          <Typography variant="h6" className={classes.title}>
+          <Typography align="center" variant="h5" className={classes.title}>
             {t('navigation.title')}
           </Typography>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">

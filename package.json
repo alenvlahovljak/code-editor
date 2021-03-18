@@ -4,7 +4,8 @@
     "build": "snowpack build",
     "test": "web-test-runner \"src/**/*.test.tsx\"",
     "format": "prettier --write \"src/**/*.{json,js,jsx,ts,tsx}\"",
-    "lint": "eslint --fix src/**/*.ts{,x}"
+    "lint": "eslint --fix src/**/*.ts{,x}",
+    "docker:start": "docker-compose up"
   },
   "dependencies": {
     "@material-ui/core": "^4.11.3",
@@ -50,6 +51,7 @@
     "snowpack": "^3.0.1",
     "typescript": "^4.0.0"
   },
+  "license": "SEE LICENSE IN <LICENSE.md>",
   "resolutions": {
     "styled-components": "^5"
   }
