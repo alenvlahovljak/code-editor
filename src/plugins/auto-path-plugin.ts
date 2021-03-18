@@ -9,12 +9,14 @@ export const autoPathPlugin = (inputCode: string) => {
   return {
     name: 'auto-path-plugin',
     setup(build: esbuild.PluginBuild) {
+      // resolve entry point
       build.onResolve({ filter: /(^index\.js$)/ }, (args: esbuild.OnResolveArgs) => {
-        console.log('onResolve entry point', args);
+        console.log('onResolve - entry point', args);
 
         return { path: args.path, namespace: 'foo' };
       });
 
+      // resolve relative paths
       build.onResolve({ filter: /^\.+\// }, async (args: esbuild.OnResolveArgs) => {
         console.log('onResolve ./ and ../ - relative paths', args);
 
@@ -24,8 +26,9 @@ export const autoPathPlugin = (inputCode: string) => {
         };
       });
 
+      // resolve other files
       build.onResolve({ filter: /.*/ }, async (args: esbuild.OnResolveArgs) => {
-        console.log('onResolve - main file', args);
+        console.log('onResolve - other file', args);
 
         return {
           namespace: 'foo',
