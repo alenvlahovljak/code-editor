@@ -2,9 +2,14 @@ name: CI/CD
 
 on:
   push:
+    branches:
+      - "!master"
+      - "init/config"
+      - "up-and-running"
+      - "handle-output-code"
   pull_request:
     branches:
-      - "handle-output-code"
+      - "master"
 
 jobs:
   build:
