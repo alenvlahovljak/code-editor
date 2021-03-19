@@ -1,8 +1,10 @@
 import React, { useState, useEffect, useRef, FC, ChangeEvent } from 'react';
 import * as esbuild from 'esbuild-wasm';
 import { useTranslation } from 'react-i18next';
-import { Grid, TextareaAutosize, Button } from '@material-ui/core';
+import { Grid, Button } from '@material-ui/core';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { CodeEditor } from 'UI';
+
 import { autoPathPlugin } from '../../../plugins/auto-path-plugin';
 import { htmlDocument } from '../../../utils/helpers';
 
@@ -28,7 +30,7 @@ const CodeIntegrator: FC = () => {
   const wasmRef = useRef<esbuild.Service | null>(null);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
-  const [input, setInput] = useState(DEFAULT_INPUT);
+  const [input, setInput] = useState<string | undefined>(DEFAULT_INPUT);
 
   const startService = async () => {
     wasmRef.current = await esbuild.startService({
@@ -67,11 +69,10 @@ const CodeIntegrator: FC = () => {
   return (
     <div className={classes.root}>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={12} md={6}>
-          <TextareaAutosize
-            rowsMin={9}
-            value={input}
-            onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setInput(e.target.value)}
+        <Grid item xs={12} sm={12} md={7}>
+          <CodeEditor
+            defaultValue={input}
+            onChange={(code: string | undefined) => setInput(code)}
           />
         </Grid>
         <Grid item xs={12} sm={12} md={6}>

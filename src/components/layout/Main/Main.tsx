@@ -1,10 +1,10 @@
 import React, { FC } from 'react';
 
-import { Grid } from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+import { Grid, PaletteType } from '@material-ui/core';
+import { MuiThemeProvider, makeStyles, createMuiTheme } from '@material-ui/core/styles';
 import { Navbar } from 'UI';
-
 import type { IMain } from 'types/components/layout/types';
+import { useThemeContext } from '../../../context/theme-context';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -14,17 +14,27 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Main: FC<IMain> = ({ children, className }) => {
+  const { state: theme } = useThemeContext();
   const classes = useStyles();
 
+  const setTheme = (type: PaletteType) =>
+    createMuiTheme({
+      palette: {
+        type
+      }
+    });
+
   return (
-    <div className={className}>
-      <Navbar />
-      <div className={classes.root}>
-        <Grid container spacing={3}>
-          {children}
-        </Grid>
+    <MuiThemeProvider theme={setTheme(theme)}>
+      <div className={className}>
+        <Navbar />
+        <div className={classes.root}>
+          <Grid container spacing={3}>
+            {children}
+          </Grid>
+        </div>
       </div>
-    </div>
+    </MuiThemeProvider>
   );
 };
 
