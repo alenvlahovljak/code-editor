@@ -9,7 +9,7 @@ import { useThemeContext } from '../../../context/theme-context';
 import { CODE_EDITOR_LANGUAGE } from '../../../utils/contants';
 
 interface CodeEditorProps {
-  defaultValue: string;
+  defaultValue: string | undefined;
   onChange(value: string | undefined): void;
 }
 
