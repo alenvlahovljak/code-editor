@@ -38,6 +38,10 @@ const Navbar: FC = () => {
   const { dispatch } = useThemeContext();
   const classes = useStyles();
 
+  useEffect(() => {
+    if (theme == 'dark') setMode(true);
+  }, []);
+
   useEffect(() => dispatch({ type: 'CHANGE_THEME', payload: theme }), [theme]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

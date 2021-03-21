@@ -46,6 +46,7 @@ const CodeEditor: FC<CodeEditorProps> = ({ defaultValue, onChange }) => {
       <button onClick={onClick}>Format Code!</button>
       <Editor
         height={500}
+        width="100%"
         defaultValue={defaultValue}
         language={CODE_EDITOR_LANGUAGE}
         theme={theme == 'light' ? 'light' : 'vs-dark'}
