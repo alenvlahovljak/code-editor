@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef, FC, ChangeEvent } from 'react';
+import React, { useState, useEffect, useRef, FC } from 'react';
 import * as esbuild from 'esbuild-wasm';
 import { useTranslation } from 'react-i18next';
-import { Grid, Button } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
 import { CodeEditor, IFrame } from 'UI';
 
@@ -25,12 +25,13 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const CodeIntegrator: FC = () => {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const classes = useStyles();
 
   const wasmRef = useRef<esbuild.Service | null>(null);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
+  const [isBuilding, setIsBuilding] = useState<boolean>(false);
   const [debouncedInput, input, setInput] = useDebounce<string | undefined>(DEFAULT_INPUT, 700);
 
   const startService = async () => {
@@ -43,10 +44,11 @@ const CodeIntegrator: FC = () => {
     startService().then(() => console.log("WASM's service has started!", wasmRef.current));
   }, []);
 
-  const onClick = async (): Promise<void> => {
+  const onBuild = async (): Promise<void> => {
     if (!wasmRef.current || !iframeRef.current?.srcdoc || !iframeRef.current?.contentWindow) {
       return;
     }
+    setIsBuilding(true);
 
     // it's srcdoc not srcDoc
     iframeRef.current.srcdoc = htmlDocument(i18n.language);
@@ -69,7 +71,7 @@ const CodeIntegrator: FC = () => {
 
   // debounce build
   useEffect(() => {
-    onClick().then(() => console.log('Process finished!'));
+    onBuild().then(() => setIsBuilding(false));
   }, [debouncedInput]);
 
   return (
@@ -79,6 +81,7 @@ const CodeIntegrator: FC = () => {
           <CodeEditor
             defaultValue={input}
             onChange={(code: string | undefined) => setInput(code)}
+            isBuilding={isBuilding}
           />
         </Grid>
         <Grid item xs={12} sm={12} md={5}>
@@ -88,11 +91,6 @@ const CodeIntegrator: FC = () => {
             sandbox="allow-scripts"
             srcDoc={htmlDocument(i18n.language)}
           />
-        </Grid>
-        <Grid item xs={12} sm={12} md={6}>
-          {/*<Button variant="contained" color="primary" onClick={onClick}>*/}
-          {/*  {t('button')}*/}
-          {/*</Button>*/}
         </Grid>
       </Grid>
     </div>

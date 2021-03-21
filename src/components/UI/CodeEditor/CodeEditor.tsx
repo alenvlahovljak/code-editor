@@ -1,21 +1,25 @@
-import React, { FC, useRef } from 'react';
+import React, { useState, useRef, FC } from 'react';
 import Editor from '@monaco-editor/react';
 import prettier from 'prettier';
 import parser from 'prettier/parser-babel';
-
 import type { editor } from 'monaco-editor';
+import { PrimaryButton } from '../../UI';
+import { Loader } from '../../animations';
 import { useThemeContext } from '../../../context/theme-context';
 
 import { CODE_EDITOR_LANGUAGE } from '../../../utils/contants';
+import { useDebounce } from 'hooks';
 
 interface CodeEditorProps {
   defaultValue: string | undefined;
+  isBuilding?: boolean;
   onChange(value: string | undefined): void;
 }
 
-const CodeEditor: FC<CodeEditorProps> = ({ defaultValue, onChange }) => {
+const CodeEditor: FC<CodeEditorProps> = ({ defaultValue, isBuilding, onChange }) => {
   const { state: theme } = useThemeContext();
   const codeEditorRef = useRef<editor.IStandaloneCodeEditor>();
+  const [debouncedFormat, format, setFormat] = useDebounce<boolean>(false, 100);
 
   const onMountHandler = (codeEditor: editor.IStandaloneCodeEditor) => {
     codeEditorRef.current = codeEditor;
@@ -42,8 +46,17 @@ const CodeEditor: FC<CodeEditorProps> = ({ defaultValue, onChange }) => {
   };
 
   return (
-    <div>
-      <button onClick={onClick}>Format Code!</button>
+    <div
+      style={{ position: 'relative' }}
+      onMouseOver={() => setFormat(!format)}
+      onMouseOut={() => setFormat(!format)}>
+      {debouncedFormat && (
+        <PrimaryButton
+          onClick={onClick}
+          style={{ position: 'absolute', zIndex: 2, right: '1%', top: '1%' }}>
+          Format!
+        </PrimaryButton>
+      )}
       <Editor
         height={500}
         width="100%"
@@ -64,6 +77,7 @@ const CodeEditor: FC<CodeEditorProps> = ({ defaultValue, onChange }) => {
           tabSize: 2
         }}
       />
+      {isBuilding && <Loader size="1rem" left="1%" bottom="2%" />}
     </div>
   );
 };
