@@ -4,12 +4,12 @@ import Editor from '@monaco-editor/react';
 import prettier from 'prettier';
 import parser from 'prettier/parser-babel';
 import type { editor } from 'monaco-editor';
+import { useDebounce } from 'hooks';
 import { PrimaryButton } from '../../UI';
 import { Loader } from '../../animations';
 import { useThemeContext } from '../../../context/theme-context';
 
 import { CODE_EDITOR_LANGUAGE } from '../../../utils/contants';
-import { useDebounce } from 'hooks';
 
 interface CodeEditorProps {
   defaultValue: string | undefined;
@@ -22,6 +22,7 @@ const CodeEditor: FC<CodeEditorProps> = ({ defaultValue, isBuilding, onChange })
   const { t } = useTranslation();
 
   const codeEditorRef = useRef<editor.IStandaloneCodeEditor>();
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [debouncedFormat, format, setFormat] = useDebounce<boolean>(false, 100);
 
   const onMountHandler = (codeEditor: editor.IStandaloneCodeEditor) => {
@@ -49,6 +50,7 @@ const CodeEditor: FC<CodeEditorProps> = ({ defaultValue, isBuilding, onChange })
   };
 
   return (
+    // eslint-disable-next-line jsx-a11y/mouse-events-have-key-events
     <div
       style={{ position: 'relative' }}
       onMouseOver={() => setFormat(true)}
