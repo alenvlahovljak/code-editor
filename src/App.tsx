@@ -6,8 +6,10 @@ import { PageAnimation } from './components/animations';
 
 import './i18n';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface AppProps {}
 
+// eslint-disable-next-line no-empty-pattern
 function App({}: AppProps) {
   return (
     <Suspense fallback={<PageAnimation />}>
