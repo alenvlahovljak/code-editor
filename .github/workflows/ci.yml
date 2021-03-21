@@ -7,6 +7,7 @@ on:
       - "init/config"
       - "up-and-running"
       - "handle-output-code"
+      - "finalize-ui"
   pull_request:
     branches:
       - "master"

@@ -5,7 +5,7 @@ import { cssInjector, initCache, escapeCharacters, resolveFileType } from '../ut
 
 const pkgsCache = initCache('pkgs');
 
-export const autoPathPlugin = (inputCode: string) => {
+export const autoPathPlugin = (inputCode: string | undefined) => {
   return {
     name: 'auto-path-plugin',
     setup(build: esbuild.PluginBuild) {

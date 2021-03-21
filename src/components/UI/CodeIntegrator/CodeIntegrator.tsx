@@ -1,8 +1,11 @@
-import React, { useState, useEffect, useRef, FC, ChangeEvent } from 'react';
+import React, { useState, useEffect, useRef, FC } from 'react';
 import * as esbuild from 'esbuild-wasm';
 import { useTranslation } from 'react-i18next';
-import { Grid, TextareaAutosize, Button } from '@material-ui/core';
+import { Grid } from '@material-ui/core';
 import { makeStyles, createStyles, Theme } from '@material-ui/core/styles';
+import { CodeEditor, IFrame } from 'UI';
+
+import { useDebounce } from '../../../hooks';
 import { autoPathPlugin } from '../../../plugins/auto-path-plugin';
 import { htmlDocument } from '../../../utils/helpers';
 
@@ -22,13 +25,14 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const CodeIntegrator: FC = () => {
-  const { t, i18n } = useTranslation();
+  const { i18n } = useTranslation();
   const classes = useStyles();
 
   const wasmRef = useRef<esbuild.Service | null>(null);
   const iframeRef = useRef<HTMLIFrameElement | null>(null);
 
-  const [input, setInput] = useState(DEFAULT_INPUT);
+  const [isBuilding, setIsBuilding] = useState<boolean>(false);
+  const [debouncedInput, input, setInput] = useDebounce<string | undefined>(DEFAULT_INPUT, 700);
 
   const startService = async () => {
     wasmRef.current = await esbuild.startService({
@@ -40,10 +44,11 @@ const CodeIntegrator: FC = () => {
     startService().then(() => console.log("WASM's service has started!", wasmRef.current));
   }, []);
 
-  const onClick = async () => {
+  const onBuild = async (): Promise<void> => {
     if (!wasmRef.current || !iframeRef.current?.srcdoc || !iframeRef.current?.contentWindow) {
       return;
     }
+    setIsBuilding(true);
 
     // it's srcdoc not srcDoc
     iframeRef.current.srcdoc = htmlDocument(i18n.language);
@@ -64,28 +69,28 @@ const CodeIntegrator: FC = () => {
     iframeRef.current.contentWindow.postMessage(result.outputFiles[0].text, '*');
   };
 
+  // debounce build
+  useEffect(() => {
+    onBuild().then(() => setIsBuilding(false));
+  }, [debouncedInput]);
+
   return (
     <div className={classes.root}>
       <Grid container spacing={2}>
-        <Grid item xs={12} sm={12} md={6}>
-          <TextareaAutosize
-            rowsMin={9}
-            value={input}
-            onChange={(e: ChangeEvent<HTMLTextAreaElement>) => setInput(e.target.value)}
+        <Grid item xs={12} sm={12} md={7}>
+          <CodeEditor
+            defaultValue={input}
+            onChange={(code: string | undefined) => setInput(code)}
+            isBuilding={isBuilding}
           />
         </Grid>
-        <Grid item xs={12} sm={12} md={6}>
-          <iframe
+        <Grid item xs={12} sm={12} md={5}>
+          <IFrame
             ref={iframeRef}
             title="Code Preview"
             sandbox="allow-scripts"
             srcDoc={htmlDocument(i18n.language)}
           />
-        </Grid>
-        <Grid item xs={12} sm={12} md={6}>
-          <Button variant="contained" color="primary" onClick={onClick}>
-            {t('button')}
-          </Button>
         </Grid>
       </Grid>
     </div>

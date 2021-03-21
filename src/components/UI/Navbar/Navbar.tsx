@@ -1,4 +1,4 @@
-import React, { FC, useState } from 'react';
+import React, { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -12,6 +12,8 @@ import {
 } from '@material-ui/core';
 import { createStyles, makeStyles, Theme } from '@material-ui/core/styles';
 import { LangPicker } from 'UI';
+import { useThemeContext } from '../../../context/theme-context';
+import { useTheme } from '../../../hooks';
 
 import { Brightness2 as MoonIcon, Flare as SunIcon } from '@material-ui/icons';
 
@@ -31,11 +33,26 @@ const useStyles = makeStyles((theme: Theme) =>
 
 const Navbar: FC = () => {
   const { t } = useTranslation();
-  const classes = useStyles();
   const [mode, setMode] = useState(false);
+  const [theme, setTheme] = useTheme();
+  const { dispatch } = useThemeContext();
+  const classes = useStyles();
+
+  useEffect(() => {
+    if (theme == 'dark') setMode(true);
+  }, []);
+
+  useEffect(() => dispatch({ type: 'CHANGE_THEME', payload: theme }), [theme]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setMode(event.target.checked);
+    const { checked } = event.target;
+
+    setMode(checked);
+    if (checked) {
+      setTheme('dark');
+    } else {
+      setTheme('light');
+    }
   };
 
   return (
