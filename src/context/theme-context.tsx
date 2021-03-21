@@ -1,7 +1,7 @@
 import * as React from 'react';
 import type { PaletteType } from '@material-ui/core';
 
-type State = PaletteType;
+type State = PaletteType | string;
 type Action = { type: 'CHANGE_THEME'; payload: State };
 type Dispatch = (action: Action) => void;
 type ThemeProviderProps = { children: React.ReactNode };
