@@ -6,8 +6,8 @@ export function initCache(name: string) {
   });
 }
 
-export function escapeCharacters(str: string, rule: RegExp) {
-  return str.replace(rule, '\\$&');
+export function escapeCharacters(str: string) {
+  return str.replace(/\n/g, '').replace(/"/g, '\\"').replace(/'/g, "\\'");
 }
 
 export function cssInjector(css: string) {
@@ -17,6 +17,6 @@ export function cssInjector(css: string) {
 }
 
 export function resolveFileType(path: string, data: string) {
-  const css = escapeCharacters(data, /[.*+?^${}()|[\]\\]/g);
+  const css = escapeCharacters(data);
   return path.match(/.css$/) ? cssInjector(css) : data;
 }
