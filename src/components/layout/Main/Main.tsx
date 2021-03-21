@@ -20,11 +20,15 @@ const Main: FC<IMain> = ({ children, className }) => {
   const setTheme = (type: PaletteType) =>
     createMuiTheme({
       palette: {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
         type
       }
     });
 
   return (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
     <MuiThemeProvider theme={setTheme(theme)}>
       <div className={className}>
         <Navbar />
