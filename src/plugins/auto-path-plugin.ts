@@ -64,7 +64,7 @@ export const autoPathPlugin = (inputCode: string) => {
 
         const { data, request } = await axios.get(args.path);
 
-        const escaped = escapeCharacters(data, /[.*+?^${}()|[\]\\]/g);
+        const escaped = escapeCharacters(data);
         const contents = cssInjector(escaped);
 
         const result: esbuild.OnLoadResult = {
