@@ -1,4 +1,5 @@
-import React, { useState, useRef, FC } from 'react';
+import React, { useRef, FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import Editor from '@monaco-editor/react';
 import prettier from 'prettier';
 import parser from 'prettier/parser-babel';
@@ -18,6 +19,8 @@ interface CodeEditorProps {
 
 const CodeEditor: FC<CodeEditorProps> = ({ defaultValue, isBuilding, onChange }) => {
   const { state: theme } = useThemeContext();
+  const { t } = useTranslation();
+
   const codeEditorRef = useRef<editor.IStandaloneCodeEditor>();
   const [debouncedFormat, format, setFormat] = useDebounce<boolean>(false, 100);
 
@@ -54,7 +57,7 @@ const CodeEditor: FC<CodeEditorProps> = ({ defaultValue, isBuilding, onChange })
         <PrimaryButton
           onClick={onClick}
           style={{ position: 'absolute', zIndex: 2, right: '1%', top: '1%' }}>
-          Format!
+          {t('format')}
         </PrimaryButton>
       )}
       <Editor
