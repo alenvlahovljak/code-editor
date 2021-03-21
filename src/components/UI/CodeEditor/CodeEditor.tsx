@@ -51,8 +51,8 @@ const CodeEditor: FC<CodeEditorProps> = ({ defaultValue, isBuilding, onChange })
   return (
     <div
       style={{ position: 'relative' }}
-      onMouseOver={() => setFormat(!format)}
-      onMouseOut={() => setFormat(!format)}>
+      onMouseOver={() => setFormat(true)}
+      onMouseOut={() => setFormat(false)}>
       {debouncedFormat && (
         <PrimaryButton
           onClick={onClick}
