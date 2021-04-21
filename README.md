@@ -1,4 +1,4 @@
-# DentISt - Dentist Managment
+# Code Editor
 
 ## Getting started
 
